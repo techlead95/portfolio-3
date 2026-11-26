@@ -72,7 +72,7 @@ function ScrollLit({ text }: { text: string }) {
               {w}
             </span>
           ) : (
-            <Word key={i} progress={scrollYProgress} range={[i / n, (i + 1.5) / n]} marked={marked}>
+            <Word key={i} progress={scrollYProgress} range={[(i / n) * 0.88, (i / n) * 0.88 + 0.12]} marked={marked}>
               {w}
             </Word>
           ),

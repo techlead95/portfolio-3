@@ -5,7 +5,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { profile } from "@/data/resume";
 import { introDelay } from "@/lib/intro";
 import { EASE_OUT } from "@/lib/utils";
-import { ArrowDown, Download } from "../icons";
+import { ArrowDown, Download, FileText } from "../icons";
+import { openResume } from "../resume-viewer";
 import { LocalTime } from "../ui/client-clock";
 import { Magnetic, RollText, ScrambleText, Tilt } from "../ui/motion-primitives";
 import { AgentTrace } from "./agent-trace";
@@ -116,13 +117,25 @@ export function Hero() {
                 </a>
               </Magnetic>
               <Magnetic>
+                <button
+                  type="button"
+                  onClick={openResume}
+                  className="group inline-flex items-center gap-2 rounded-full border border-line-strong bg-elev/60 px-6 py-3.5 text-sm font-medium backdrop-blur transition-colors hover:border-fg"
+                >
+                  <RollText>View résumé</RollText>
+                  <FileText size={16} className="transition-transform duration-300 group-hover:-rotate-6" />
+                </button>
+              </Magnetic>
+              {/* Phones open the PDF in the browser viewer, which has its own download button. */}
+              <Magnetic className="max-sm:hidden">
                 <a
                   href={profile.resumeUrl}
                   download
-                  className="group inline-flex items-center gap-2 rounded-full border border-line-strong bg-elev/60 px-6 py-3.5 text-sm font-medium backdrop-blur transition-colors hover:border-fg"
+                  aria-label="Download résumé (PDF)"
+                  title="Download résumé (PDF)"
+                  className="group grid size-12 place-items-center rounded-full border border-line-strong bg-elev/60 backdrop-blur transition-colors hover:border-fg"
                 >
-                  <RollText>Download résumé</RollText>
-                  <Download size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+                  <Download size={17} className="transition-transform duration-300 group-hover:translate-y-0.5" />
                 </a>
               </Magnetic>
             </motion.div>

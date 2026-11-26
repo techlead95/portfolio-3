@@ -51,8 +51,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0b0d",
-  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f3ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0b0d" },
+  ],
+  colorScheme: "light dark",
 };
 
 // Runs before first paint: applies the saved theme (no flash) and decides whether
@@ -63,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       suppressHydrationWarning
       className={`${sans.variable} ${mono.variable} ${serif.variable} antialiased`}
     >

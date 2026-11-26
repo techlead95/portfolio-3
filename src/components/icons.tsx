@@ -143,3 +143,9 @@ export const Quote = (p: IconProps) => (
     <path d="M10 7H6.5A1.5 1.5 0 0 0 5 8.5V12h4v1c0 1.5-.8 2.6-2.5 3.2M19 7h-3.5A1.5 1.5 0 0 0 14 8.5V12h4v1c0 1.5-.8 2.6-2.5 3.2" />
   </Icon>
 );
+export const FileText = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8l-5-5Z" />
+    <path d="M14 3v5h5M9 13h6M9 17h4" />
+  </Icon>
+);

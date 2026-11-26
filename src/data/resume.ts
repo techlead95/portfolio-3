@@ -14,8 +14,8 @@ export const profile = {
   email: "luis@lrasgado.com",
   phone: "(408) 673-8257",
   phoneHref: "tel:+14086738257",
-  website: "https://lrasgado.com",
-  websiteLabel: "lrasgado.com",
+  website: "https://lrasgado.netlify.app",
+  websiteLabel: "lrasgado.netlify.app",
   resumeUrl: "/Luis_Rasgado_Resume.pdf",
   years: "11+",
   description:

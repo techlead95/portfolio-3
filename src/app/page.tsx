@@ -6,6 +6,7 @@ import { Experience } from "@/components/sections/experience";
 import { Skills } from "@/components/sections/skills";
 import { Contact } from "@/components/sections/contact";
 import { ChatWidget } from "@/components/chat/chat-widget";
+import { ResumeViewer } from "@/components/resume-viewer";
 import { education, profile, skills } from "@/data/resume";
 
 const jsonLd = {
@@ -37,6 +38,7 @@ export default function Home() {
         <Contact />
       </main>
       <ChatWidget />
+      <ResumeViewer />
     </>
   );
 }

@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, stagger, useInView, useReducedMotion } from "motion/react";
 import { profile } from "@/data/resume";
-import { ArrowUp, ArrowUpRight, Check, Copy, Download, Mail, MapPin, Phone, Spark } from "../icons";
+import { ArrowUp, ArrowUpRight, Check, Copy, Download, FileText, Mail, MapPin, Phone, Spark } from "../icons";
+import { openResume } from "../resume-viewer";
 import { openChat } from "../chat/chat-widget";
 import { CurrentYear, LocalTime } from "../ui/client-clock";
 import { Magnetic, Reveal, RollText, SplitWords } from "../ui/motion-primitives";
@@ -147,12 +148,19 @@ export function Contact() {
                 <Spark size={15} className="text-accent-text transition-transform duration-500 group-hover:rotate-90" />
                 Ask my AI
               </button>
+              <button
+                type="button"
+                onClick={openResume}
+                className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
+              >
+                <FileText size={15} /> View résumé
+              </button>
               <a
                 href={profile.resumeUrl}
                 download
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-fg"
+                className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
               >
-                <Download size={15} /> Résumé (PDF)
+                <Download size={15} /> Download PDF
               </a>
             </div>
           </Reveal>

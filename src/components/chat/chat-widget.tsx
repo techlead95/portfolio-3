@@ -12,6 +12,8 @@ type Item = Msg | Note;
 
 const OPEN_EVENT = "open-chat";
 const MAX_CHARS = 500;
+const AUTO_OPEN_MS = 8000;
+const AUTO_KEY = "chat-auto-opened";
 const SUGGESTIONS = [
   "What did he achieve at Blackboard?",
   "What AI systems has he shipped?",
@@ -76,6 +78,17 @@ export function ChatWidget() {
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const touched = useRef(false); // visitor opened or closed the chat themselves
+  const autoOpened = useRef(false);
+
+  const openByUser = useCallback(() => {
+    touched.current = true;
+    setOpen(true);
+  }, []);
+  const close = useCallback(() => {
+    touched.current = true;
+    setOpen(false);
+  }, []);
 
   const send = useCallback(
     async (text: string) => {
@@ -153,24 +166,46 @@ export function ChatWidget() {
   // Open from anywhere (e.g. the contact section), optionally with a question.
   useEffect(() => {
     const onOpen = (e: Event) => {
-      setOpen(true);
+      openByUser();
       const q = (e as CustomEvent<string | undefined>).detail;
       if (q) setInput(q);
     };
     window.addEventListener(OPEN_EVENT, onOpen);
     return () => window.removeEventListener(OPEN_EVENT, onOpen);
+  }, [openByUser]);
+
+  // Pop open by itself 8s after load, once per browser session, unless the
+  // visitor has already opened or closed it.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(AUTO_KEY)) return;
+    } catch {
+      return;
+    }
+    const id = window.setTimeout(() => {
+      if (touched.current) return;
+      try {
+        sessionStorage.setItem(AUTO_KEY, "1");
+      } catch {}
+      autoOpened.current = true;
+      setOpen(true);
+    }, AUTO_OPEN_MS);
+    return () => window.clearTimeout(id);
   }, []);
 
   useEffect(() => {
     if (!open) return;
-    const t = window.setTimeout(() => inputRef.current?.focus(), 250);
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    // Don't steal focus (or raise a phone keyboard) when it opened by itself.
+    const auto = autoOpened.current;
+    autoOpened.current = false;
+    const t = auto ? 0 : window.setTimeout(() => inputRef.current?.focus(), 250);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     return () => {
       window.clearTimeout(t);
       window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, close]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -187,7 +222,7 @@ export function ChatWidget() {
         {!open && (
           <motion.button
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={openByUser}
             className="group fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-accent py-3 pl-3.5 pr-5 text-sm font-medium text-accent-ink shadow-[0_14px_40px_-10px_var(--accent)] sm:bottom-7 sm:right-7"
             initial={{ opacity: 0, scale: 0.6, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -233,7 +268,7 @@ export function ChatWidget() {
               </div>
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg"
                 aria-label="Close chat"
               >

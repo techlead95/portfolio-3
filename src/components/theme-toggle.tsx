@@ -12,7 +12,7 @@ function subscribe(cb: () => void) {
   return () => obs.disconnect();
 }
 const getTheme = (): Theme =>
-  document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
 function applyTheme(next: Theme) {
   document.documentElement.setAttribute("data-theme", next);

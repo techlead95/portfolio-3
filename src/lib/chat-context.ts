@@ -24,7 +24,7 @@ ROLE: ${profile.role}
 LOCATION: ${profile.location}
 EXPERIENCE: ${profile.years} years
 SUMMARY: ${profile.description}
-CONTACT: email ${profile.email}, phone ${profile.phone}
+CONTACT: email ${profile.email}, phone ${profile.phone}, portfolio ${profile.website}
 
 EXPERIENCE
 ${jobs}
