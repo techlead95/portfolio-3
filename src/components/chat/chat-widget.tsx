@@ -223,7 +223,7 @@ export function ChatWidget() {
           <motion.button
             type="button"
             onClick={openByUser}
-            className="group fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-accent py-3 pl-3.5 pr-5 text-sm font-medium text-accent-ink shadow-[0_14px_40px_-10px_var(--accent)] sm:bottom-7 sm:right-7"
+            className="group fixed bottom-20 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-accent py-3 pl-3.5 pr-5 text-sm font-medium text-accent-ink shadow-[0_14px_40px_-10px_var(--accent)] sm:bottom-[5.5rem] sm:right-7"
             initial={{ opacity: 0, scale: 0.6, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.6, y: 20 }}
@@ -247,7 +247,7 @@ export function ChatWidget() {
           <motion.div
             role="dialog"
             aria-label={`Chat about ${profile.name}`}
-            className="fixed inset-x-3 bottom-3 z-[60] flex max-h-[min(640px,calc(100svh-1.5rem))] flex-col overflow-hidden rounded-3xl border border-line-strong bg-elev shadow-[0_40px_120px_-30px_rgb(0_0_0/0.7)] sm:inset-x-auto sm:bottom-7 sm:right-7 sm:w-[400px]"
+            className="fixed inset-x-3 bottom-[4.5rem] z-[60] flex max-h-[min(640px,calc(100svh-6rem))] flex-col overflow-hidden rounded-3xl border border-line-strong bg-elev shadow-[0_40px_120px_-30px_rgb(0_0_0/0.7)] sm:inset-x-auto sm:bottom-[5.5rem] sm:right-7 sm:w-[400px]"
             style={{ transformOrigin: "bottom right" }}
             initial={{ opacity: 0, scale: 0.85, y: 24, filter: "blur(8px)" }}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
