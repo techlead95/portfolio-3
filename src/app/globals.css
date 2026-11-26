@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* ---------- Theme tokens ---------- */
+:root,
+[data-theme="dark"] {
+  --bg: #0a0b0d;
+  --bg-elev: #111316;
+  --surface: #181b1f;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --fg: #ecedee;
+  --muted: #a0a6ab;
+  --subtle: #6b7177;
+  --accent: #c8f560;
+  --accent-ink: #0a0b0d;
+  --accent-text: #c8f560;
+  --accent-soft: rgb(200 245 96 / 0.1);
+  --warn: #f5b546;
+  --grain-opacity: 0.07;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f4f3ee;
+  --bg-elev: #fbfaf7;
+  --surface: #ebe9e2;
+  --line: rgb(17 18 20 / 0.09);
+  --line-strong: rgb(17 18 20 / 0.2);
+  --fg: #111214;
+  --muted: #52575d;
+  --subtle: #858a8f;
+  --accent: #c8f560;
+  --accent-ink: #111214;
+  --accent-text: #4a6a00;
+  --accent-soft: rgb(110 150 0 / 0.1);
+  --warn: #b26b00;
+  --grain-opacity: 0.05;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
+  --color-warn: var(--warn);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+}
+
+@theme {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-blink: blink 1s steps(2, start) infinite;
+  --animate-ping-slow: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--fg);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  section[id] {
+    scroll-margin-top: 0;
+  }
+}
+
+/* ---------- Utilities ---------- */
+@utility bg-grid {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+@utility mask-hero {
+  mask-image: radial-gradient(ellipse 80% 70% at 65% 40%, #000 30%, transparent 75%);
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+
+@utility noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Theme switch (View Transitions API) ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* ---------- Highlight colour for achievement sweeps ---------- */
+:root,
+[data-theme="dark"] {
+  --highlight: rgb(200 245 96 / 0.24);
+}
+[data-theme="light"] {
+  --highlight: rgb(200 245 96 / 0.7);
+}
+
+/* ---------- Custom cursor ---------- */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+/* ---------- Intro curtain (CSS-only, runs before hydration) ---------- */
+@property --intro-n {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.intro-count {
+  counter-reset: intro var(--intro-n);
+  animation: intro-count 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+.intro-count::after {
+  content: counter(intro, decimal-leading-zero);
+}
+.intro-bar {
+  transform: scaleX(0);
+  animation: intro-bar 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+.intro-role {
+  opacity: 0;
+  animation: intro-fade 0.6s ease 0.25s forwards;
+}
+.intro-layer {
+  animation: intro-lift 0.85s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+.intro-layer--main {
+  animation-delay: 1.2s;
+}
+.intro-layer--accent {
+  animation-delay: 1.32s;
+}
+.intro {
+  animation: intro-done 0s linear 2.3s forwards;
+}
+
+@keyframes intro-count {
+  to {
+    --intro-n: 100;
+  }
+}
+@keyframes intro-bar {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes intro-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-lift {
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes intro-done {
+  to {
+    visibility: hidden;
+  }
+}
+
+[data-intro="skip"] .intro {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
+
